@@ -22,7 +22,7 @@
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
     </JLinkDriver>
     <DebugChecksum>
-        <Checksum>3985156884</Checksum>
+        <Checksum>1584196506</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -144,7 +144,9 @@
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Count>0</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\gpio.c}.139.11" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\gpio.c}.145.11" 0 0 1 "" 0 "" 0</Bp1>
+        <Count>2</Count>
     </Breakpoints2>
     <Aliases>
         <Count>0</Count>

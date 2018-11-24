@@ -48,12 +48,20 @@
 /*----------------------------------------------------------------------------*/
 /* USER CODE BEGIN 1 */
 //按下松开检测标志位
+/*
 int buttonflag1 = 0;
 int buttonflag2 = 0;
 int buttonflag3 = 0;
 int buttonflag4 = 0;
 int buttonflag9 = 0;
-int buttonflag12 = 0;
+int buttonflag12 = 0;*/
+
+GPIO_PinState lastbutton_1 = GPIO_PIN_SET;
+GPIO_PinState lastbutton_2 = GPIO_PIN_SET;
+GPIO_PinState lastbutton_3 = GPIO_PIN_SET;
+GPIO_PinState lastbutton_4 = GPIO_PIN_SET;
+GPIO_PinState lastbutton_9 = GPIO_PIN_SET;
+GPIO_PinState lastbutton_12 = GPIO_PIN_SET;
 /* USER CODE END 1 */
 
 /** Configure pins as 
@@ -73,19 +81,26 @@ void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
-  /*Configure GPIO pins : PC0 PC6 PC7 PC9 
-                           PC10 PC11 */
-  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_9 
-                          |GPIO_PIN_10|GPIO_PIN_11;
+  /*Configure GPIO pins : PC0 PC7 PC9 PC10 
+                           PC11 */
+  /*
+  GPIO_InitStruct.Pin = GPIO_PIN_0|GPIO_PIN_7|GPIO_PIN_9|GPIO_PIN_10 
+                          |GPIO_PIN_11;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_RISING_FALLING;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);*/
 
   /*Configure GPIO pins : PC1 PC2 PC3 PC4 
                            PC5 PC8 */
   GPIO_InitStruct.Pin = GPIO_PIN_1|GPIO_PIN_2|GPIO_PIN_3|GPIO_PIN_4 
                           |GPIO_PIN_5|GPIO_PIN_8;
   GPIO_InitStruct.Mode = GPIO_MODE_IT_FALLING;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PC6 */
+  GPIO_InitStruct.Pin = GPIO_PIN_6|GPIO_PIN_0|GPIO_PIN_7|GPIO_PIN_9|GPIO_PIN_10 ;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
   GPIO_InitStruct.Pull = GPIO_NOPULL;
   HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
@@ -114,11 +129,40 @@ void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 2 */
+
+
+void gpio_delayed_button_ctrl(GPIO_PinState *last, GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin, char* str1, char* str2)
+{
+    if(*last == GPIO_PIN_RESET && HAL_GPIO_ReadPin(GPIOx,GPIO_Pin) == GPIO_PIN_SET)
+      {
+          //uprintf("%s\r\n",str1);
+          can_send_msg(325, str1,3);
+          *last = GPIO_PIN_SET;
+      }
+      else if(*last == GPIO_PIN_SET && HAL_GPIO_ReadPin(GPIOx,GPIO_Pin) == GPIO_PIN_RESET)
+      {
+          //uprintf("%s\r\n",str2);
+          can_send_msg(325, str2,3);
+          *last = GPIO_PIN_RESET;      
+      }
+}
+
+void gpio_delayed_button()
+{
+    gpio_delayed_button_ctrl(&lastbutton_1, GPIOC, GPIO_PIN_6, "fe", "fb");
+    gpio_delayed_button_ctrl(&lastbutton_2, GPIOC, GPIO_PIN_7, "le", "lb");
+    gpio_delayed_button_ctrl(&lastbutton_3, GPIOC, GPIO_PIN_10, "be", "bb");
+    gpio_delayed_button_ctrl(&lastbutton_4, GPIOC, GPIO_PIN_9, "re", "rb");
+    gpio_delayed_button_ctrl(&lastbutton_9, GPIOC, GPIO_PIN_11, "tle", "tlb");
+    gpio_delayed_button_ctrl(&lastbutton_12, GPIOC, GPIO_PIN_0, "tre", "trb");
+}
+
 //外部中断的callback，PIN_x对应每一个按键
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if(GPIO_Pin == GPIO_PIN_0)
   {
+      /*
       //button12
       if(buttonflag12 == 0)
       {
@@ -132,6 +176,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
           //uprintf("tre\r\n");
           can_send_msg(325, "tre",3);
       }
+*/
   } 
   else if(GPIO_Pin == GPIO_PIN_1)
   {
@@ -161,6 +206,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   else if(GPIO_Pin == GPIO_PIN_6)
   {
       //button1
+      /*
       if(buttonflag1 == 0)
       {
           buttonflag1 = 1;
@@ -170,11 +216,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
       {
           buttonflag1 = 0;
           can_send_msg(325, "fe",2);
-      }
+      }*/
   }  
   else if(GPIO_Pin == GPIO_PIN_7)
   {
       //button2
+      /*
       if(buttonflag2 == 0)
       {
           buttonflag2 = 1;
@@ -184,7 +231,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
       {
           buttonflag2 = 0;
           can_send_msg(325, "le",2);
-      }
+      }*/
   }  
   else if(GPIO_Pin == GPIO_PIN_8)
   {
@@ -193,6 +240,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
   }  
   else if(GPIO_Pin == GPIO_PIN_9)
   {
+      /*
       //button4
       if(buttonflag4 == 0)
       {
@@ -203,11 +251,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
       {
           buttonflag4 = 0;
           can_send_msg(325, "re",2);
-      }
+      }*/
   }  
   else if(GPIO_Pin == GPIO_PIN_10)
   {
       //button3
+      /*
       if(buttonflag3 == 0)
       {
           buttonflag3 = 1;
@@ -217,11 +266,12 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
       {
           buttonflag3 = 0;
           can_send_msg(325, "be",2);
-      }
+      }*/
   }  
   else if(GPIO_Pin == GPIO_PIN_11)
   {
-      //nutton9
+      //button9
+      /*
       if(buttonflag9 == 0)
       {
           buttonflag9 = 1;
@@ -233,7 +283,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
           buttonflag9 = 0;
           //uprintf("tle\r\n");
           can_send_msg(325, "tle",3);
-      }
+      }*/
   }  
 }
 /* USER CODE END 2 */
