@@ -98,11 +98,10 @@ int main(void)
   MX_USART1_UART_Init();
   MX_CAN1_Init();
   /* USER CODE BEGIN 2 */
-    can_init();
-  
+  can_init();
   can_add_callback(325, TEST_FUNC);
   can_send_msg(325, "hello",6);
-    uprintf("start...\r\n");
+  uprintf("start...\r\n");
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -114,24 +113,6 @@ int main(void)
 
   /* USER CODE BEGIN 3 */
       gpio_delayed_button();
-/*
-      if(buttonflag1 == 1)
-      {
-          uprintf("button_1\r\n");
-      }
-      if(buttonflag2 == 1)
-      {
-          uprintf("button_2\r\n");
-      }
-      if(buttonflag3 == 1)
-      {
-          uprintf("button_3\r\n");
-      }
-      if(buttonflag4 == 1)
-      {
-          uprintf("button_4\r\n");
-      }
-*/
   }
   /* USER CODE END 3 */
 
@@ -196,7 +177,7 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-//can的测试程序
+//can的中断接收处理函数
 void TEST_FUNC(CanRxMsgTypeDef* pRxMsg)
 {
     uint8_t Data[8];

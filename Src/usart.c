@@ -143,7 +143,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
     }
     HAL_UART_Receive_IT(&huart1,(uint8_t *)&buffer_rx_temp,1);  
 }
-
+/*
+//Ê¾²¨Æ÷
 char s[22]={'b','y',16,6};
 void send_wave(float arg1,float arg2,float arg3,float arg4)
 {
@@ -156,7 +157,7 @@ void send_wave(float arg1,float arg2,float arg3,float arg4)
     memcpy(s+12,&arg3,sizeof(arg1));
     memcpy(s+16,&arg4,sizeof(arg1));
     HAL_UART_Transmit(&huart1,(uint8_t *)s, 22,1000);   
-}
+}*/
 /* USER CODE END 1 */
 
 /**

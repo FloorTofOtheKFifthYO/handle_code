@@ -54,16 +54,13 @@
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
-extern int buttonflag1;
-extern int buttonflag2;
-extern int buttonflag3;
-extern int buttonflag4;
 /* USER CODE END Private defines */
 
 void MX_GPIO_Init(void);
 
-/* USER CODE BEGIN Prototypes */
 
+/* USER CODE BEGIN Prototypes */
+extern void gpio_delayed_button();
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
