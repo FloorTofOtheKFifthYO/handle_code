@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : gpio.h
-  * Description        : This file contains all the functions prototypes for 
-  *                      the gpio  
+  * File Name          : ADC.h
+  * Description        : This file provides code for the configuration
+  *                      of the ADC instances.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -36,10 +36,9 @@
   *
   ******************************************************************************
   */
-
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __gpio_H
-#define __gpio_H
+#ifndef __adc_H
+#define __adc_H
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -49,23 +48,27 @@
 #include "main.h"
 
 /* USER CODE BEGIN Includes */
-#include "usart.h"
-#include "can.h"
+
 /* USER CODE END Includes */
 
+extern ADC_HandleTypeDef hadc1;
+
 /* USER CODE BEGIN Private defines */
+
 /* USER CODE END Private defines */
 
-void MX_GPIO_Init(void);
+extern void _Error_Handler(char *, int);
+
+void MX_ADC1_Init(void);
 
 /* USER CODE BEGIN Prototypes */
-extern void gpio_delayed_button();
+
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus
 }
 #endif
-#endif /*__ pinoutConfig_H */
+#endif /*__ adc_H */
 
 /**
   * @}

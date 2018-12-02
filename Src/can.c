@@ -73,9 +73,10 @@ CAN_HandleTypeDef hcan1;
 /* CAN1 init function */
 void MX_CAN1_Init(void)
 {
+
   hcan1.Instance = CAN1;
   hcan1.Init.Prescaler = 3;
-  hcan1.Init.Mode = CAN_MODE_LOOPBACK;
+  hcan1.Init.Mode = CAN_MODE_NORMAL;
   hcan1.Init.SJW = CAN_SJW_1TQ;
   hcan1.Init.BS1 = CAN_BS1_9TQ;
   hcan1.Init.BS2 = CAN_BS2_4TQ;
@@ -89,6 +90,7 @@ void MX_CAN1_Init(void)
   {
     _Error_Handler(__FILE__, __LINE__);
   }
+
 }
 
 void HAL_CAN_MspInit(CAN_HandleTypeDef* canHandle)

@@ -22,7 +22,7 @@
         <LeaveTargetRunning>_ 0</LeaveTargetRunning>
     </JLinkDriver>
     <DebugChecksum>
-        <Checksum>1584196506</Checksum>
+        <Checksum>3953591231</Checksum>
     </DebugChecksum>
     <Exceptions>
         <StopOnUncaught>_ 0</StopOnUncaught>
@@ -32,6 +32,7 @@
         <Enabled>_ 0</Enabled>
     </CodeCoverage>
     <Disassembly>
+        <MixedMode>1</MixedMode>
         <InstrCount>0</InstrCount>
     </Disassembly>
     <CallStack>
@@ -41,9 +42,9 @@
         <OverrideDefaultClocks>0</OverrideDefaultClocks>
         <CpuClock>72000000</CpuClock>
         <ClockAutoDetect>0</ClockAutoDetect>
-        <ClockWanted>250000</ClockWanted>
-        <JtagSpeed>250000</JtagSpeed>
-        <Prescaler>288</Prescaler>
+        <ClockWanted>2000000</ClockWanted>
+        <JtagSpeed>2250000</JtagSpeed>
+        <Prescaler>32</Prescaler>
         <TimeStampPrescIndex>0</TimeStampPrescIndex>
         <TimeStampPrescData>0</TimeStampPrescData>
         <PcSampCYCTAP>1</PcSampCYCTAP>
@@ -113,6 +114,11 @@
         <ShowTimeSum>1</ShowTimeSum>
         <SumSortOrder>0</SumSortOrder>
     </EventLog>
+    <LogFile>
+        <LoggingEnabled>_ 0</LoggingEnabled>
+        <LogFile>_ ""</LogFile>
+        <Category>_ 0</Category>
+    </LogFile>
     <TermIOLog>
         <LoggingEnabled>_ 0</LoggingEnabled>
         <LogFile>_ ""</LogFile>
@@ -135,16 +141,14 @@
         <Probe0>I0</Probe0>
         <ProbeSetup0>2 1 1 2 0 0</ProbeSetup0>
     </PowerProbe>
-    <LogFile>
-        <LoggingEnabled>_ 0</LoggingEnabled>
-        <LogFile>_ ""</LogFile>
-        <Category>_ 0</Category>
-    </LogFile>
     <DisassembleMode>
         <mode>0</mode>
     </DisassembleMode>
     <Breakpoints2>
-        <Count>0</Count>
+        <Bp0>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\can.c}.91.5" 0 0 1 "" 0 "" 0</Bp0>
+        <Bp1>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\gpio.c}.151.3" 0 0 1 "" 0 "" 0</Bp1>
+        <Bp2>_ 1 "EMUL_CODE" "{$PROJ_DIR$\..\Src\main.c}.114.3" 0 0 1 "" 0 "" 0</Bp2>
+        <Count>3</Count>
     </Breakpoints2>
     <Aliases>
         <Count>0</Count>

@@ -1,8 +1,8 @@
 /**
   ******************************************************************************
-  * File Name          : gpio.h
-  * Description        : This file contains all the functions prototypes for 
-  *                      the gpio  
+  * File Name          : dma.c
+  * Description        : This file provides code for the configuration
+  *                      of all the requested memory to memory DMA transfers.
   ******************************************************************************
   ** This notice applies to any and all portions of this file
   * that are not between comment pairs USER CODE BEGIN and
@@ -36,36 +36,39 @@
   *
   ******************************************************************************
   */
-
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __gpio_H
-#define __gpio_H
-#ifdef __cplusplus
- extern "C" {
-#endif
-
 /* Includes ------------------------------------------------------------------*/
-#include "stm32f4xx_hal.h"
-#include "main.h"
+#include "dma.h"
 
-/* USER CODE BEGIN Includes */
-#include "usart.h"
-#include "can.h"
-/* USER CODE END Includes */
+/* USER CODE BEGIN 0 */
 
-/* USER CODE BEGIN Private defines */
-/* USER CODE END Private defines */
+/* USER CODE END 0 */
 
-void MX_GPIO_Init(void);
+/*----------------------------------------------------------------------------*/
+/* Configure DMA                                                              */
+/*----------------------------------------------------------------------------*/
 
-/* USER CODE BEGIN Prototypes */
-extern void gpio_delayed_button();
-/* USER CODE END Prototypes */
+/* USER CODE BEGIN 1 */
 
-#ifdef __cplusplus
+/* USER CODE END 1 */
+
+/** 
+  * Enable DMA controller clock
+  */
+void MX_DMA_Init(void) 
+{
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA2_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA2_Stream0_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA2_Stream0_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA2_Stream0_IRQn);
+
 }
-#endif
-#endif /*__ pinoutConfig_H */
+
+/* USER CODE BEGIN 2 */
+
+/* USER CODE END 2 */
 
 /**
   * @}

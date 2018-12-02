@@ -39,7 +39,9 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "stm32f4xx_hal.h"
+#include "adc.h"
 #include "can.h"
+#include "dma.h"
 #include "usart.h"
 #include "gpio.h"
 
@@ -64,6 +66,8 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN 0 */
 void TEST_FUNC(CanRxMsgTypeDef* pRxMsg);
+int main_flag = 0;
+uint32_t ADC_Value[150];
 /* USER CODE END 0 */
 
 /**
@@ -95,12 +99,18 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
+  MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_CAN1_Init();
+  MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
   can_init();
   can_add_callback(325, TEST_FUNC);
-  can_send_msg(325, "hello",6);
+  can_add_callback(324, TEST_FUNC);
+  //can_send_msg(325, "hello",6);
+  
+  //HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 150);
+  main_flag = 1;
   uprintf("start...\r\n");
   /* USER CODE END 2 */
 
@@ -187,6 +197,57 @@ void TEST_FUNC(CanRxMsgTypeDef* pRxMsg)
         Data[i] = pRxMsg->Data[i];
     }
     uprintf("%s\r\n",Data);  
+}
+
+void HAL_SYSTICK_Callback(void){
+    static int time_1ms_cnt;
+    if(main_flag == 1)
+    {
+        time_1ms_cnt++;
+        
+        //if(time_1ms_cnt % 30 == 0)
+        if(0)
+        {
+
+            uint32_t ad[3] = 0;
+             for(int i = 0; i < 150;)
+            {
+            ad[0] += ADC_Value[i++];
+            ad[1] += ADC_Value[i++];
+            ad[2] += ADC_Value[i++];
+            }
+        /*ad1 /= 50;
+        ad2 /= 50;
+        ad3 /= 50;
+        ad1 /= 16;
+        ad2 /= 16;
+        ad3 /= 16;*/
+        //uprintf(" AD1 value = %d \r\n", ad1);
+        //uprintf(" AD2 value = %d \r\n", ad2);
+        //data从0到5分别是ad1高位低位，ad2高位低位，ad3高位低位
+        uint8_t data[6];
+        for(int i = 0; i <= 2; i--)
+        {
+            ad[i] /= 50;
+            ad[i] /= 16;
+            data[2*i + 1] = ad[i] % 128;
+            data[2*i] = ad[i] / 128;
+        }
+        /*
+        for(int i = 2; i >= 0; i--)
+        {
+            data[i] = '0' + ad1 % 10;
+            ad1 /= 10;
+            data[i + 3] = '0' + ad2 % 10;
+            ad2 /= 10;
+        }*/
+        can_send_msg(324,data,6);//摇杆id324
+        }
+        if(time_1ms_cnt >= 65530)
+        {
+            time_1ms_cnt = 0;
+        }
+    }  
 }
 /* USER CODE END 4 */
 
