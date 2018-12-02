@@ -108,7 +108,7 @@ int main(void)
   can_add_callback(325, TEST_FUNC);
   can_add_callback(324, TEST_FUNC);
   //can_send_msg(325, "hello",6);
-  
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 100);
   //HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 150);
   main_flag = 1;
   uprintf("start...\r\n");
@@ -205,27 +205,29 @@ void HAL_SYSTICK_Callback(void){
     {
         time_1ms_cnt++;
         
-        //if(time_1ms_cnt % 30 == 0)
-        if(0)
+        if(time_1ms_cnt % 30 == 0)
         {
-
-            uint32_t ad[3] = 0;
+            /*
+            uint32_t ad[3] = {0};
              for(int i = 0; i < 150;)
             {
             ad[0] += ADC_Value[i++];
             ad[1] += ADC_Value[i++];
             ad[2] += ADC_Value[i++];
+            }*/
+            uint32_t ad1 = 0, ad2 = 0;
+            for(int i = 0; i < 100;)
+            {  
+                ad1 += ADC_Value[i++];
+                ad2 += ADC_Value[i++];
             }
-        /*ad1 /= 50;
-        ad2 /= 50;
-        ad3 /= 50;
-        ad1 /= 16;
-        ad2 /= 16;
-        ad3 /= 16;*/
-        //uprintf(" AD1 value = %d \r\n", ad1);
-        //uprintf(" AD2 value = %d \r\n", ad2);
+            ad1 /= 50;
+            ad2 /= 50;
+            ad1 /= 16;
+            ad2 /= 16;
         //data从0到5分别是ad1高位低位，ad2高位低位，ad3高位低位
         uint8_t data[6];
+        /*
         for(int i = 0; i <= 2; i--)
         {
             ad[i] /= 50;
@@ -233,14 +235,14 @@ void HAL_SYSTICK_Callback(void){
             data[2*i + 1] = ad[i] % 128;
             data[2*i] = ad[i] / 128;
         }
-        /*
+        */
         for(int i = 2; i >= 0; i--)
         {
             data[i] = '0' + ad1 % 10;
             ad1 /= 10;
             data[i + 3] = '0' + ad2 % 10;
             ad2 /= 10;
-        }*/
+        }
         can_send_msg(324,data,6);//摇杆id324
         }
         if(time_1ms_cnt >= 65530)
