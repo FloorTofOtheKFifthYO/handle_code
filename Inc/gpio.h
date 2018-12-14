@@ -51,6 +51,7 @@
 /* USER CODE BEGIN Includes */
 #include "usart.h"
 #include "can.h"
+#include "nrf24l01.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN Private defines */
@@ -60,6 +61,7 @@ void MX_GPIO_Init(void);
 
 /* USER CODE BEGIN Prototypes */
 extern void gpio_delayed_button();
+extern void exit_button();
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

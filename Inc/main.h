@@ -42,12 +42,20 @@
 #define __MAIN_H__
 
 /* Includes ------------------------------------------------------------------*/
+#include "stm32f4xx_hal.h"
 
 /* USER CODE BEGIN Includes */
 
 /* USER CODE END Includes */
 
 /* Private define ------------------------------------------------------------*/
+
+#define NRF_CS_Pin GPIO_PIN_15
+#define NRF_CS_GPIO_Port GPIOA
+#define NRF_IRQ_Pin GPIO_PIN_8
+#define NRF_IRQ_GPIO_Port GPIOB
+#define NRF_CE_Pin GPIO_PIN_9
+#define NRF_CE_GPIO_Port GPIOB
 
 /* ########################## Assert Selection ############################## */
 /**

@@ -42,11 +42,14 @@
 #include "adc.h"
 #include "can.h"
 #include "dma.h"
+#include "spi.h"
 #include "usart.h"
 #include "gpio.h"
+#include "fsmc.h"
 
 /* USER CODE BEGIN Includes */
 #include <assert.h>
+#include "nrf24l01.h"
 /* USER CODE END Includes */
 
 /* Private variables ---------------------------------------------------------*/
@@ -68,6 +71,7 @@ void SystemClock_Config(void);
 void TEST_FUNC(CanRxMsgTypeDef* pRxMsg);
 int main_flag = 0;
 uint32_t ADC_Value[150];
+//NRF_Dev NRF24l01;
 /* USER CODE END 0 */
 
 /**
@@ -103,6 +107,8 @@ int main(void)
   MX_USART1_UART_Init();
   MX_CAN1_Init();
   MX_ADC1_Init();
+  MX_FSMC_Init();
+  MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
   can_init();
   can_add_callback(325, TEST_FUNC);
@@ -110,6 +116,8 @@ int main(void)
   //can_send_msg(325, "hello",6);
   HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 100);
   //HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 150);
+
+  NRF_Init(&NRF24l01);
   main_flag = 1;
   uprintf("start...\r\n");
   /* USER CODE END 2 */
@@ -122,6 +130,15 @@ int main(void)
   /* USER CODE END WHILE */
 
   /* USER CODE BEGIN 3 */
+      //nrf_send("hellworl",8);
+     /* char str[13] = {'\0'} ;
+      strcpy(str,"helloworld");
+      add_crc_check((unsigned char *)str, 11);
+      NRF24l01.tx_data = str;
+      NRF24l01.tx_len = 13;
+      nrf_send_message(&NRF24l01);
+      HAL_Delay(20);*/
+      exit_button();
       gpio_delayed_button();
   }
   /* USER CODE END 3 */

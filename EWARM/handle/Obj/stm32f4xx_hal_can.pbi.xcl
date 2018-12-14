@@ -11,8 +11,6 @@ C:\Users\wangyunxuan\Desktop\Robocon\program\handle\handle\EWARM/../Drivers/STM3
 -I
 C:\Users\wangyunxuan\Desktop\Robocon\program\handle\handle\EWARM/../Drivers/CMSIS/Device/ST/STM32F4xx/Include
 -I
-C:\Users\wangyunxuan\Desktop\Robocon\program\handle\handle\EWARM/../Drivers/CMSIS/Include
--I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Core\Include
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\DSP\Include
@@ -28,8 +26,6 @@ C:\Users\wangyunxuan\Desktop\Robocon\program\handle\handle\Drivers\STM32F4xx_HAL
 C:\Users\wangyunxuan\Desktop\Robocon\program\handle\handle\Drivers\STM32F4xx_HAL_Driver\Inc\Legacy
 -I
 C:\Users\wangyunxuan\Desktop\Robocon\program\handle\handle\Drivers\CMSIS\Device\ST\STM32F4xx\Include
--I
-C:\Users\wangyunxuan\Desktop\Robocon\program\handle\handle\Drivers\CMSIS\Include
 -I
 C:\Program Files (x86)\IAR Systems\Embedded Workbench 8.0\arm\CMSIS\Core\Include
 -I
