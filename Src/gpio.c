@@ -157,13 +157,13 @@ void gpio_delayed_button_ctrl(GPIO_PinState *last, GPIO_TypeDef* GPIOx, uint16_t
 {
     if(*last == GPIO_PIN_RESET && HAL_GPIO_ReadPin(GPIOx,GPIO_Pin) == GPIO_PIN_SET)
       {
-          //can_send_msg(325, str1,3);
+          can_send_msg(325, str1,3);
           nrf_send(str1,3);
           *last = GPIO_PIN_SET;
       }
       else if(*last == GPIO_PIN_SET && HAL_GPIO_ReadPin(GPIOx,GPIO_Pin) == GPIO_PIN_RESET)
       {
-          //can_send_msg(325, str2,3);
+          can_send_msg(325, str2,3);
           nrf_send(str2,3);
           *last = GPIO_PIN_RESET;      
       }
@@ -172,11 +172,11 @@ void gpio_delayed_button_ctrl(GPIO_PinState *last, GPIO_TypeDef* GPIOx, uint16_t
 //添加按键连发控制函数，这个函数在main里调用
 void gpio_delayed_button()
 {
-    gpio_delayed_button_ctrl(&lastbutton_1, GPIOC, GPIO_PIN_6, "fe", "fb");
-    gpio_delayed_button_ctrl(&lastbutton_2, GPIOC, GPIO_PIN_7, "le", "lb");
-    gpio_delayed_button_ctrl(&lastbutton_3, GPIOC, GPIO_PIN_10, "be", "bb");
-    gpio_delayed_button_ctrl(&lastbutton_4, GPIOC, GPIO_PIN_9, "re", "rb");
-    gpio_delayed_button_ctrl(&lastbutton_9, GPIOC, GPIO_PIN_11, "tle", "tlb");
+    //gpio_delayed_button_ctrl(&lastbutton_1, GPIOC, GPIO_PIN_6, "fe", "fb");
+    gpio_delayed_button_ctrl(&lastbutton_2, GPIOC, GPIO_PIN_5, "lre", "lrb");
+    gpio_delayed_button_ctrl(&lastbutton_3, GPIOC, GPIO_PIN_4, "rre", "rrb");
+    //gpio_delayed_button_ctrl(&lastbutton_4, GPIOC, GPIO_PIN_9, "re", "rb");
+    //gpio_delayed_button_ctrl(&lastbutton_9, GPIOC, GPIO_PIN_11, "tle", "tlb");
     gpio_delayed_button_ctrl(&lastbutton_12, GPIOC, GPIO_PIN_0, "tre", "trb");
 }
 
@@ -185,11 +185,11 @@ void exit_button()
     switch(exit_state)
     {
     case 1:
-        nrf_send("2",1);
+        nrf_send("0",1);
         exit_state = 0;
         break;
     case 2:
-        nrf_send("3",1);
+        nrf_send("1",1);
         exit_state = 0;
         break;
     case 3:
@@ -197,15 +197,11 @@ void exit_button()
         exit_state = 0;
         break;
     case 4:
-        nrf_send("1",1);
+        nrf_send("3",1);
         exit_state = 0;
         break;
     case 5:
-        nrf_send("0",1);
-        exit_state = 0;
-        break;
-    case 8:
-        nrf_send("st",2);
+        nrf_send("2",1);
         exit_state = 0;
         break;
         
@@ -217,40 +213,29 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
   if(GPIO_Pin == GPIO_PIN_1)
   {
-      //uprintf("BUTTON_8\r\n");
-      //can_send_msg(325, "2",1);
+      //can_send_msg(325, "0",1);
       exit_state = 1;
   }
   else if(GPIO_Pin == GPIO_PIN_2)
   {
-      //uprintf("BUTTON_11\r\n");
-      //can_send_msg(325, "3",1);
+     // can_send_msg(325, "1",1);
         exit_state = 2;
   }
   else if(GPIO_Pin == GPIO_PIN_3)
   {
-      //uprintf("BUTTON_10\r\n");
-      //can_send_msg(325, "4",1);
+     // can_send_msg(325, "4",1);
     exit_state = 3;
   }
   else if(GPIO_Pin == GPIO_PIN_4)
   {
-      //uprintf("BUTTON_7\r\n");
-      //can_send_msg(325, "1",1);
-    exit_state = 4;
+      //can_send_msg(325, "3",1);
+    //exit_state = 4;
   }
   else if(GPIO_Pin == GPIO_PIN_5)
   {
-      //uprintf("BUTTON_6\r\n");
-      //can_send_msg(325, "0",1);
-    exit_state = 5;
-  }   
-  else if(GPIO_Pin == GPIO_PIN_8)
-  {
-      //uprintf("BUTTON_5\r\n");
-      //can_send_msg(325, "st",2);
-    exit_state = 8;
-  }    
+      //can_send_msg(325, "2",1);
+    //exit_state = 5;
+  }       
   __HAL_GPIO_EXTI_CLEAR_IT(GPIO_Pin);
 }
 /* USER CODE END 2 */

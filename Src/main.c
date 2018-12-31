@@ -69,8 +69,12 @@ void SystemClock_Config(void);
 
 /* USER CODE BEGIN 0 */
 void TEST_FUNC(CanRxMsgTypeDef* pRxMsg);
+void TEST_FUNC2(CanRxMsgTypeDef* pRxMsg);
+void adc_exe();
 int main_flag = 0;
 uint32_t ADC_Value[150];
+
+int adc_flag = 0;
 //NRF_Dev NRF24l01;
 /* USER CODE END 0 */
 
@@ -112,10 +116,10 @@ int main(void)
   /* USER CODE BEGIN 2 */
   can_init();
   can_add_callback(325, TEST_FUNC);
-  can_add_callback(324, TEST_FUNC);
+  can_add_callback(324, TEST_FUNC2);
   //can_send_msg(325, "hello",6);
-  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 100);
-  //HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 150);
+  //HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 100);
+  HAL_ADC_Start_DMA(&hadc1, (uint32_t*)&ADC_Value, 150);
 
   NRF_Init(&NRF24l01);
   main_flag = 1;
@@ -138,8 +142,12 @@ int main(void)
       NRF24l01.tx_len = 13;
       nrf_send_message(&NRF24l01);
       HAL_Delay(20);*/
+      
+      
+      adc_exe();
       exit_button();
       gpio_delayed_button();
+      //nrf_send("helloo",6);
   }
   /* USER CODE END 3 */
 
@@ -216,22 +224,27 @@ void TEST_FUNC(CanRxMsgTypeDef* pRxMsg)
     uprintf("%s\r\n",Data);  
 }
 
-void HAL_SYSTICK_Callback(void){
-    static int time_1ms_cnt;
-    if(main_flag == 1)
+void TEST_FUNC2(CanRxMsgTypeDef* pRxMsg)
+{
+    uint8_t Data[6];
+    int i;
+    for(i = 0; i < 6; i++)
     {
-        time_1ms_cnt++;
-        
-        if(time_1ms_cnt % 30 == 0)
-        {
-            /*
-            uint32_t ad[3] = {0};
-             for(int i = 0; i < 150;)
-            {
+        Data[i] = pRxMsg->Data[i];
+    }
+    uprintf("%d %d %d\r\n",Data[0]*128 + Data[1], Data[2]*128 + Data[3], Data[4]*128 + Data[5]);
+}
+
+void adc_exe()
+{
+    if(adc_flag == 0) return;
+    uint32_t ad[3] = {0};
+    for(int i = 0; i < 150;)
+            {//yzx
             ad[0] += ADC_Value[i++];
             ad[1] += ADC_Value[i++];
             ad[2] += ADC_Value[i++];
-            }*/
+            }/*
             uint32_t ad1 = 0, ad2 = 0;
             for(int i = 0; i < 100;)
             {  
@@ -241,26 +254,41 @@ void HAL_SYSTICK_Callback(void){
             ad1 /= 50;
             ad2 /= 50;
             ad1 /= 16;
-            ad2 /= 16;
+            ad2 /= 16;*/
         //data从0到5分别是ad1高位低位，ad2高位低位，ad3高位低位
-        uint8_t data[6];
-        /*
-        for(int i = 0; i <= 2; i--)
+        uint8_t adc_data[7];
+        adc_data[0] = 'R';
+        
+        for(int i = 0; i <= 2; i++)
         {
             ad[i] /= 50;
             ad[i] /= 16;
-            data[2*i + 1] = ad[i] % 128;
-            data[2*i] = ad[i] / 128;
+            adc_data[2*i + 1 + 1] = ad[i] % 128;
+            adc_data[2*i + 1] = ad[i] / 128;
         }
-        */
+        /*
         for(int i = 2; i >= 0; i--)
         {
             data[i] = '0' + ad1 % 10;
             ad1 /= 10;
             data[i + 3] = '0' + ad2 % 10;
             ad2 /= 10;
-        }
-        can_send_msg(324,data,6);//摇杆id324
+        }*/
+        
+        //can_send_msg(324,data,6);//摇杆id324
+        nrf_send(adc_data,7);
+    adc_flag = 0;
+}
+
+void HAL_SYSTICK_Callback(void){
+    static int time_1ms_cnt = 0;
+    if(main_flag == 1)
+    {
+        time_1ms_cnt++;
+        
+        if(time_1ms_cnt % 50 == 0)
+        {
+            adc_flag = 1;  
         }
         if(time_1ms_cnt >= 65530)
         {

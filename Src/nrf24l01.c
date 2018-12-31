@@ -12,7 +12,7 @@ uint8_t  RX_ADDRESS[TX_ADR_WIDTH]= {0x20,0x30,0x40,0x40,0x40};
 uint8_t  TX_ADDRESS[TX_ADR_WIDTH]= {0x20,0x30,0x40,0x40,0x30}; 
 #endif
 
-uint8_t  NRF_TX_Data[TX_PLOAD_WIDTH]="hellooooo";//{1,2,3,4,5,6,7,8,9,10};
+uint8_t  NRF_TX_Data[TX_PLOAD_WIDTH]={0};//"hellooooo";//{1,2,3,4,5,6,7,8,9,10};
 uint8_t  NRF_RX_Data[RX_PLOAD_WIDTH]={0};
 
 
@@ -403,7 +403,7 @@ int crc_check(unsigned char *rcvstr, int datalen)
 	if(c == b) return 1;
 	else return 0;
 }
-//datalen最长为8
+//datalen最长为30,每次发送32个字节，不足部分用空格填充,31,32位为校验位。
 void nrf_send(uint8_t *sendstr, int datalen)
 {
     if(datalen > 30|| datalen < 0) return;
@@ -417,8 +417,18 @@ void nrf_send(uint8_t *sendstr, int datalen)
     {
         send[i] = 0;
     }
-      add_crc_check((unsigned char *)send, 30);
-      NRF24l01.tx_data = send;
+      //add_crc_check((unsigned char *)send, 30);
+    unsigned short check = usMBCRC16(send,30);
+	send[30] = (unsigned char)(check / 256);
+	send[31] = (unsigned char)(check % 256);
+    for(int i = 0; i < 32; i++)
+    {
+         NRF24l01.tx_data[i] = send[i];
+         uprintf("%d ",send[i]);
+    }
+    uprintf("\r\n");
+       
+      //NRF24l01.tx_data = send;
       NRF24l01.tx_len = 32;
       nrf_send_message(&NRF24l01);
 }
